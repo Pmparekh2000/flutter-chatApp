@@ -9,12 +9,19 @@ class SignUp extends StatefulWidget {
 class _SignUpState extends State<SignUp> {
 
   final formKey = GlobalKey<FormState>();
+
+  bool isLoading = false;
+
   TextEditingController userNameTextEditingController = new TextEditingController();
   TextEditingController emailTextEditingController = new TextEditingController();
   TextEditingController passwordTextEditingController = new TextEditingController();
 
   signMeUp() {
     if(formKey.currentState.validate()) {
+      setState(() {
+        isLoading = true;
+      });
+
 
     }
   }
@@ -23,7 +30,9 @@ class _SignUpState extends State<SignUp> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appBarMain(context),
-      body: SingleChildScrollView(
+      body: isLoading ? Container(
+        child: Center(child: CircularProgressIndicator()),
+      ) :SingleChildScrollView(
         child: Container(
           alignment: Alignment.bottomCenter,
           child: Container(
