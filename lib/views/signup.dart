@@ -1,4 +1,5 @@
 import 'package:chatapp/services/auth.dart';
+import 'package:chatapp/views/chatRoomsScreen.dart';
 import 'package:chatapp/widgets/widget.dart';
 import 'package:flutter/material.dart';
 
@@ -27,7 +28,13 @@ class _SignUpState extends State<SignUp> {
 
       authMethods.signUpWithEmailAndPassword(emailTextEditingController.text.trim(), passwordTextEditingController.text.trim()).then((val){
 
-
+        // print("${val.uid}");
+        
+        Navigator.pushReplacement(context, MaterialPageRoute(
+          builder: (context) => ChatRoom()
+        ));
+        // Here we use pushReplacement since we don't want the user to go back to the sign in screen after completing the sign in
+        // On the other hand push only will allow the user to backtrack to the earlier screen
 
       });
     }
