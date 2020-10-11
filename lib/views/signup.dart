@@ -1,3 +1,4 @@
+import 'package:chatapp/services/auth.dart';
 import 'package:chatapp/widgets/widget.dart';
 import 'package:flutter/material.dart';
 
@@ -12,6 +13,8 @@ class _SignUpState extends State<SignUp> {
 
   bool isLoading = false;
 
+  AuthMethods authMethods = new AuthMethods();
+
   TextEditingController userNameTextEditingController = new TextEditingController();
   TextEditingController emailTextEditingController = new TextEditingController();
   TextEditingController passwordTextEditingController = new TextEditingController();
@@ -22,7 +25,11 @@ class _SignUpState extends State<SignUp> {
         isLoading = true;
       });
 
+      authMethods.signUpWithEmailAndPassword(userNameTextEditingController.text, passwordTextEditingController.text).then((val){
 
+        print("$val");
+
+      });
     }
   }
 

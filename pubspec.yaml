@@ -30,7 +30,10 @@ dependencies:
   cupertino_icons: ^0.1.3
 
   # Below is the firebase auth added
-  firebase_auth: ^0.15.0+1
+  firebase_auth: ^0.16.0
+
+  # The below is the firestore dependency
+  cloud_firestore: ^0.13.5
 
 dev_dependencies:
   flutter_test:
