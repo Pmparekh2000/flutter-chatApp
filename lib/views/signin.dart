@@ -1,5 +1,8 @@
+import 'package:chatapp/services/auth.dart';
 import 'package:chatapp/widgets/widget.dart';
 import 'package:flutter/material.dart';
+
+import 'chatRoomsScreen.dart';
 
 class SignIn extends StatefulWidget {
   final Function toggle;
@@ -10,6 +13,36 @@ class SignIn extends StatefulWidget {
 }
 
 class _SignInState extends State<SignIn> {
+
+  final formKey = GlobalKey<FormState>();
+
+  bool isLoading = false;
+
+  AuthMethods authMethods = new AuthMethods();
+
+  TextEditingController emailTextEditingController = new TextEditingController();
+  TextEditingController passwordTextEditingController = new TextEditingController();
+
+  signMeIn() {
+    if (formKey.currentState.validate()) {
+      setState(() {
+        isLoading = true;
+      });
+
+      authMethods.signInWithEmailAndPassword(
+          emailTextEditingController.text.trim(),
+          passwordTextEditingController.text.trim()).then((val) {
+        // print("${val.uid}");
+
+        Navigator.pushReplacement(context, MaterialPageRoute(
+            builder: (context) => ChatRoom()
+        ));
+        // Here we use pushReplacement since we don't want the user to go back to the sign in screen after completing the sign in
+        // On the other hand push only will allow the user to backtrack to the earlier screen
+
+      });
+    }
+  }
 
 
 
@@ -26,15 +59,26 @@ class _SignInState extends State<SignIn> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                TextField(
-                  style: simpleTextStyle(),
-                  decoration: textFieldInputDecoration("email"),
-                ),
-                TextField(
-                  obscureText: true,
-                  style: simpleTextStyle(),
-                  decoration: textFieldInputDecoration("password"),
-                ),
+                Column(
+                  children:[
+                      TextFormField(
+                        validator: (val) {
+                        return RegExp(r"^[a-zA-Z0-9,a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(val) ? null : "Enter a valid email";
+                        },
+                      controller: emailTextEditingController,
+                      style: simpleTextStyle(),
+                      decoration: textFieldInputDecoration("email"),
+                    ),
+                  TextFormField(
+                    validator: (val) {
+                      return val.length < 6 ? "Please enter password greater then 6" : null;
+                    },
+                    controller: passwordTextEditingController,
+                    obscureText: true,
+                    style: simpleTextStyle(),
+                    decoration: textFieldInputDecoration("password"),
+                  ),
+                ] ),
                 SizedBox(height: 8,),
                 Container(
                   alignment: Alignment.centerRight,
@@ -44,20 +88,25 @@ class _SignInState extends State<SignIn> {
                   ),
                 ),
                 SizedBox(height: 8,),
-                Container(
-                  alignment: Alignment.center,
-                  width: MediaQuery.of(context).size.width,
-                  padding: EdgeInsets.symmetric(vertical: 20),
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        const Color(0xff007EF4),
-                        const Color(0xff2A75BC)
-                      ]
+                GestureDetector(
+                  onTap: () {
+                    signMeIn();
+                  },
+                  child: Container(
+                    alignment: Alignment.center,
+                    width: MediaQuery.of(context).size.width,
+                    padding: EdgeInsets.symmetric(vertical: 20),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          const Color(0xff007EF4),
+                          const Color(0xff2A75BC)
+                        ]
+                      ),
+                      borderRadius: BorderRadius.circular(30)
                     ),
-                    borderRadius: BorderRadius.circular(30)
+                    child: Text("Sign In", style: mediumTextStyle(),),
                   ),
-                  child: Text("Sign In", style: mediumTextStyle(),),
                 ),
                 SizedBox(height: 16,),
                 Container(
