@@ -38,7 +38,7 @@ class AuthMethods {
     }
   }
 
-  Future signInOut() async {
+  Future signOut() async {
     try {
       return await _auth.signOut();
     } catch(e) {
