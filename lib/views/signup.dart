@@ -1,3 +1,4 @@
+import 'package:chatapp/helper/helperfunction.dart';
 import 'package:chatapp/services/auth.dart';
 import 'package:chatapp/services/database.dart';
 import 'package:chatapp/views/chatRoomsScreen.dart';
@@ -21,6 +22,8 @@ class _SignUpState extends State<SignUp> {
 
   AuthMethods authMethods = new AuthMethods();
   DatabaseMethods databaseMethods = new DatabaseMethods();
+//  HelperFunctions helperFunctions = new HelperFunctions();
+// no need to instantiate the helper function class
 
   TextEditingController userNameTextEditingController = new TextEditingController();
   TextEditingController emailTextEditingController = new TextEditingController();
@@ -33,6 +36,9 @@ class _SignUpState extends State<SignUp> {
         'email': emailTextEditingController.text
       };
 
+      HelperFunctions.saveUserEmailSharedPreference(emailTextEditingController.text);
+      HelperFunctions.saveUserNameSharedPreference(userNameTextEditingController.text);
+
       setState(() {
         isLoading = true;
       });
@@ -42,6 +48,7 @@ class _SignUpState extends State<SignUp> {
         // print("${val.uid}");
 
         databaseMethods.uploadUserInfo(userInfoMap);
+        HelperFunctions.saveUserLoggedInSharedPreference(true);
         Navigator.pushReplacement(context, MaterialPageRoute(
           builder: (context) => ChatRoom()
         ));
@@ -80,7 +87,6 @@ class _SignUpState extends State<SignUp> {
                         decoration: textFieldInputDecoration("username"),
                       ),
                       TextFormField(
-
                         validator: (val) {
                           return RegExp(r"^[a-zA-Z0-9,a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(val) ? null : "Enter a valid email";
                         },

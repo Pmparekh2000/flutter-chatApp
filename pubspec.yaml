@@ -35,6 +35,9 @@ dependencies:
   # The below is the firestore dependency
   cloud_firestore: ^0.13.5
 
+  #
+  shared_preferences: ^0.5.12+2
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

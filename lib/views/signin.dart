@@ -1,5 +1,8 @@
+import 'package:chatapp/helper/helperfunction.dart';
 import 'package:chatapp/services/auth.dart';
+import 'package:chatapp/services/database.dart';
 import 'package:chatapp/widgets/widget.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'chatRoomsScreen.dart';
@@ -16,35 +19,41 @@ class _SignInState extends State<SignIn> {
 
   final formKey = GlobalKey<FormState>();
 
-  bool isLoading = false;
-
   AuthMethods authMethods = new AuthMethods();
-
+  DatabaseMethods databaseMethods = new DatabaseMethods();
   TextEditingController emailTextEditingController = new TextEditingController();
   TextEditingController passwordTextEditingController = new TextEditingController();
 
+  bool isLoading = false;
+  QuerySnapshot snapshotUserInfo;
+
   signMeIn() {
-    if (formKey.currentState.validate()) {
+    if(formKey.currentState.validate()) {
+
+      HelperFunctions.saveUserEmailSharedPreference(emailTextEditingController.text);
+
+      databaseMethods.getUserByEmail(emailTextEditingController.text).then((val){
+        snapshotUserInfo = val;
+        HelperFunctions.saveUserNameSharedPreference(snapshotUserInfo.documents[0].data["name"]);
+        //print("${snapshotUserInfo.documents[0].data["name"]}");
+      });
+
       setState(() {
         isLoading = true;
       });
 
-      authMethods.signInWithEmailAndPassword(
-          emailTextEditingController.text.trim(),
-          passwordTextEditingController.text.trim()).then((val) {
-        // print("${val.uid}");
-
-        Navigator.pushReplacement(context, MaterialPageRoute(
-            builder: (context) => ChatRoom()
-        ));
-        // Here we use pushReplacement since we don't want the user to go back to the sign in screen after completing the sign in
-        // On the other hand push only will allow the user to backtrack to the earlier screen
-
+      authMethods.signInWithEmailAndPassword(emailTextEditingController.text, passwordTextEditingController.text).then((val){
+        if(val!=null) {
+          HelperFunctions.saveUserLoggedInSharedPreference(true);
+          Navigator.pushReplacement(context, MaterialPageRoute(
+              builder: (context) => ChatRoom()
+          ));
+        }
       });
+
+
     }
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -59,26 +68,28 @@ class _SignInState extends State<SignIn> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Column(
-                  children:[
-                      TextFormField(
-                        validator: (val) {
+                Form(
+                  key: formKey,
+                  child: Column(children: [
+                    TextFormField(
+                      validator: (val) {
                         return RegExp(r"^[a-zA-Z0-9,a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(val) ? null : "Enter a valid email";
-                        },
+                      },
                       controller: emailTextEditingController,
                       style: simpleTextStyle(),
-                      decoration: textFieldInputDecoration("email"),
+                      decoration: textFieldInputDecoration("Email"),
                     ),
-                  TextFormField(
-                    validator: (val) {
-                      return val.length < 6 ? "Please enter password greater then 6" : null;
-                    },
-                    controller: passwordTextEditingController,
-                    obscureText: true,
-                    style: simpleTextStyle(),
-                    decoration: textFieldInputDecoration("password"),
-                  ),
-                ] ),
+                    TextFormField(
+                      obscureText: true,
+                      validator: (val) {
+                        return val.length < 6 ? "Please enter password greater then 6" : null;
+                      },
+                      controller: passwordTextEditingController,
+                      style: simpleTextStyle(),
+                      decoration: textFieldInputDecoration("Password"),
+                    ),
+                  ],),
+                ),
                 SizedBox(height: 8,),
                 Container(
                   alignment: Alignment.centerRight,
