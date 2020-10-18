@@ -25,6 +25,6 @@ class DatabaseMethods{
 
   getConversationMessages(String chatRoomId) async {
     print(chatRoomId);
-    return Firestore.instance.collection("ChatRoom").document(chatRoomId).collection("chats").snapshots();
+    return Firestore.instance.collection("ChatRoom").document(chatRoomId).collection("chats").orderBy("time").snapshots();
   }
 }
