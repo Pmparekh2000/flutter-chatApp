@@ -46,7 +46,7 @@ class _SearchScreenState extends State<SearchScreen> {
   createChatroomAndStartConversation({String userName}) {
     print("${Constants.myName}");
     if(userName != Constants.myName) {
-      String chatRoomId = getChatRoom(userName, Constants.myName);
+      String chatRoomId = getChatRoomId(userName, Constants.myName);
 
       List<String> users = [userName, Constants.myName];
       Map<String, dynamic> chatRoomMap = {
@@ -57,7 +57,9 @@ class _SearchScreenState extends State<SearchScreen> {
       // Below we are creating a chat Room
       DatabaseMethods().createChatRoom(chatRoomId, chatRoomMap);
       Navigator.push(context, MaterialPageRoute(
-          builder:(context) => ConversationScreen()
+          builder:(context) => ConversationScreen(
+            chatRoomId
+          )
       ));
     } else {
       print("You cannot send message to yourself");
@@ -110,8 +112,11 @@ class _SearchScreenState extends State<SearchScreen> {
         child: Column(
           children: [
             Container(
-              color: Color(0x54FFFFFF),
-              padding: EdgeInsets.symmetric(horizontal: 24, vertical: 60),
+              decoration: BoxDecoration(
+                color: Color(0x54FFFFFF),
+                borderRadius: BorderRadius.circular(20)
+              ),
+              padding: EdgeInsets.symmetric(horizontal: 24, vertical: 10),
               child: Row(
                 children: [
                   Expanded(
@@ -121,7 +126,7 @@ class _SearchScreenState extends State<SearchScreen> {
                             color: Colors.white
                         ),
                         decoration: InputDecoration(
-                          hintText: "search username...",
+                          hintText: "Search username...",
                           hintStyle: TextStyle(
                             color: Colors.white54
                           ),
@@ -159,7 +164,7 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 }
 
-getChatRoom(String a, String b) {
+getChatRoomId(String a, String b) {
   if(a.substring(0, 1).codeUnitAt(0) > b.substring(0, 1).codeUnitAt(0)) {
     return "$b\_$a";
   } else {
