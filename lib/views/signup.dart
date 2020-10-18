@@ -84,7 +84,7 @@ class _SignUpState extends State<SignUp> {
                         },
                         controller: userNameTextEditingController,
                         style: simpleTextStyle(),
-                        decoration: textFieldInputDecoration("username"),
+                        decoration: textFieldInputDecoration("Username"),
                       ),
                       TextFormField(
                         validator: (val) {
@@ -92,7 +92,7 @@ class _SignUpState extends State<SignUp> {
                         },
                         controller: emailTextEditingController,
                         style: simpleTextStyle(),
-                        decoration: textFieldInputDecoration("email"),
+                        decoration: textFieldInputDecoration("Email"),
                       ),
                       TextFormField(
                         obscureText: true,
@@ -101,7 +101,7 @@ class _SignUpState extends State<SignUp> {
                         },
                         controller: passwordTextEditingController,
                         style: simpleTextStyle(),
-                        decoration: textFieldInputDecoration("password"),
+                        decoration: textFieldInputDecoration("Password"),
                       )
                     ],
                   ),
@@ -137,20 +137,20 @@ class _SignUpState extends State<SignUp> {
                   ),
                 ),
                 SizedBox(height: 16,),
-                Container(
-                  alignment: Alignment.center,
-                  width: MediaQuery.of(context).size.width,
-                  padding: EdgeInsets.symmetric(vertical: 20),
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(30)
-                  ),
-                  child: Text("Sign Up with Google", style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 17
-                  ),
-                  ),
-                ),
+//                Container(
+//                  alignment: Alignment.center,
+//                  width: MediaQuery.of(context).size.width,
+//                  padding: EdgeInsets.symmetric(vertical: 20),
+//                  decoration: BoxDecoration(
+//                      color: Colors.white,
+//                      borderRadius: BorderRadius.circular(30)
+//                  ),
+//                  child: Text("Sign Up with Google", style: TextStyle(
+//                      color: Colors.black,
+//                      fontSize: 17
+//                  ),
+//                  ),
+//                ),
                 SizedBox(height: 16,),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,

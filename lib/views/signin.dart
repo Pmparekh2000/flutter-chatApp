@@ -120,20 +120,20 @@ class _SignInState extends State<SignIn> {
                   ),
                 ),
                 SizedBox(height: 16,),
-                Container(
-                  alignment: Alignment.center,
-                  width: MediaQuery.of(context).size.width,
-                  padding: EdgeInsets.symmetric(vertical: 20),
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(30)
-                  ),
-                  child: Text("Sign In with Google", style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 17
-                    ),
-                  ),
-                ),
+//                Container(
+//                  alignment: Alignment.center,
+//                  width: MediaQuery.of(context).size.width,
+//                  padding: EdgeInsets.symmetric(vertical: 20),
+//                  decoration: BoxDecoration(
+//                      color: Colors.white,
+//                      borderRadius: BorderRadius.circular(30)
+//                  ),
+//                  child: Text("Sign In with Google", style: TextStyle(
+//                        color: Colors.black,
+//                        fontSize: 17
+//                    ),
+//                  ),
+//                ),
                 SizedBox(height: 16,),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,

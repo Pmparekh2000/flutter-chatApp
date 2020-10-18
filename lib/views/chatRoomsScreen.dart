@@ -3,6 +3,7 @@ import 'package:chatapp/helper/constants.dart';
 import 'package:chatapp/helper/helperfunction.dart';
 import 'package:chatapp/services/auth.dart';
 import 'package:chatapp/services/database.dart';
+import 'package:chatapp/views/conversation_screen.dart';
 import 'package:chatapp/views/search.dart';
 import 'package:chatapp/widgets/widget.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +27,7 @@ class _ChatRoomState extends State<ChatRoom> {
           itemCount: snapshot.data.documents.length,
             itemBuilder: (context, index) {
             return ChatRoomTile(
-              snapshot.data.documents[index].data["chatroomId"].toString().replaceAll("_", "").replaceAll(Constants.myName, "")
+              snapshot.data.documents[index].data["chatroomId"].toString().replaceAll("_", "").replaceAll(Constants.myName, ""), snapshot.data.documents[index].data["chatroomId"]
             );
             }): Container();
       },
@@ -85,27 +86,40 @@ class _ChatRoomState extends State<ChatRoom> {
 
 class ChatRoomTile extends StatelessWidget {
   final String userName;
-  ChatRoomTile(this.userName);
+  final String chatRoomId;
+  ChatRoomTile(this.userName, this.chatRoomId);
   
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-      child: Row(
-        children: [
-          Container(
-              height: 40,
-              width: 40,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                color:Colors.blue,
-                borderRadius: BorderRadius.circular(40)
-              ),
-            child: Text("${userName.substring(0, 1).toUpperCase()}", style: mediumTextStyle(),),
-          ),
-          SizedBox(width: 8,),
-          Text(userName, style: mediumTextStyle(),)
-        ],
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(context, MaterialPageRoute(
+          builder: (context) => ConversationScreen(chatRoomId),
+        ));
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.grey,
+          borderRadius: BorderRadius.circular(25)
+        ),
+        margin: EdgeInsets.symmetric(vertical: 2),
+        padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+        child: Row(
+          children: [
+            Container(
+                height: 40,
+                width: 40,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color:Colors.blue,
+                  borderRadius: BorderRadius.circular(40)
+                ),
+              child: Text("${userName.substring(0, 1).toUpperCase()}", style: mediumTextStyle(),),
+            ),
+            SizedBox(width: 8,),
+            Text(userName, style: mediumTextStyle(),)
+          ],
+        ),
       ),
     );
   }
